@@ -1,0 +1,28 @@
+import pandas as pd
+
+# Load the input Excel sheet with the list of phone numbers
+input_file = 'input.xlsx'  # Replace with the path to your input file
+input_sheet = 'Sheet1'  # Replace with your sheet name if needed
+input_df = pd.read_excel(input_file, sheet_name=input_sheet)
+
+# Ensure the 'Phn_Num' column is loaded
+if 'Phn_Num' not in input_df.columns:
+    raise ValueError("Column 'Phn_Num' not found in input sheet.")
+
+# Load the source Excel sheet with all the data
+source_file = 'source.xlsx'  # Replace with the path to your source file
+source_sheet = 'Sheet1'  # Replace with your sheet name if needed
+source_df = pd.read_excel(source_file, sheet_name=source_sheet)
+
+# Ensure the 'Phn_Num' column is present in the source sheet
+if 'Phn_Num' not in source_df.columns:
+    raise ValueError("Column 'Phn_Num' not found in source sheet.")
+
+# Filter the rows in the source sheet matching the phone numbers in the input sheet
+filtered_df = source_df[source_df['Phn_Num'].isin(input_df['Phn_Num'])]
+
+# Save the filtered data into a new Excel file
+output_file = 'output.xlsx'  # Specify the output file name
+filtered_df.to_excel(output_file, index=False)
+
+print(f"Filtered data saved to {output_file}")
